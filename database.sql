@@ -1,6 +1,6 @@
--- Create database
-CREATE DATABASE IF NOT EXISTS company_db;
-USE company_db;
+-- Create database (comment out - database already exists on Hostinger)
+-- CREATE DATABASE IF NOT EXISTS company_db;
+USE u926020147_company;
 
 -- Admin users table
 CREATE TABLE IF NOT EXISTS admin_users (
