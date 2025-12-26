@@ -1532,26 +1532,26 @@ section {
 /* Mobile Navigation - Hidden by default */
 .mobile-nav {
     display: none;
-    visibility: hidden;
     position: fixed;
     top: 70px;
     left: 0;
     right: 0;
     background: white;
     box-shadow: var(--shadow-lg);
-    z-index: 999;
-    opacity: 0;
+    z-index: 9999;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
 }
 
 .mobile-nav.active {
     display: block;
-    visibility: visible;
-    opacity: 1;
+    max-height: 400px;
 }
 
 .mobile-nav ul {
     list-style: none;
-    padding: 1rem;
+    padding: 0;
     margin: 0;
 }
 
@@ -1561,12 +1561,15 @@ section {
 
 .mobile-nav a {
     display: block;
-    padding: 1rem;
+    padding: 1rem 1.5rem;
     color: var(--text-color);
     text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
 }
 
-.mobile-nav a:hover {
+.mobile-nav a:hover,
+.mobile-nav a:active {
     color: var(--primary-color);
     background-color: var(--light-color);
 }
@@ -1575,14 +1578,34 @@ section {
 @media (min-width: 769px) {
     .mobile-nav {
         display: none !important;
-        visibility: hidden !important;
     }
     .mobile-nav.active {
         display: none !important;
-        visibility: hidden !important;
     }
     .mobile-menu-toggle {
         display: none !important;
+    }
+}
+
+/* Mobile Menu Toggle Button */
+@media (max-width: 768px) {
+    .mobile-menu-toggle {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 1.3rem;
+        cursor: pointer;
+        z-index: 10000;
+    }
+    
+    .mobile-menu-toggle:active {
+        background: var(--secondary-color);
     }
 }
 
@@ -1660,18 +1683,69 @@ section {
     }
     
     .hero-slider {
-        height: 400px;
+        height: 450px;
     }
     
     .slide-content {
-        left: 20px;
-        right: 20px;
-        bottom: 20px;
-        padding: 1rem;
+        left: 15px;
+        right: 15px;
+        bottom: 80px;
+        padding: 1rem 1.2rem;
+        background: rgba(0, 0, 0, 0.75);
+        border-radius: 8px;
     }
     
     .slide-content h2 {
-        font-size: 1.5rem;
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+        line-height: 1.3;
+    }
+    
+    .slide-content p {
+        font-size: 0.85rem;
+        margin-bottom: 1rem;
+        line-height: 1.4;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    .slide-content .btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.85rem;
+    }
+    
+    /* Mobile slider buttons - smaller and repositioned */
+    .slider-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.9);
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    
+    .prev-btn {
+        left: 10px;
+    }
+    
+    .next-btn {
+        right: 10px;
+    }
+    
+    .slider-dots {
+        bottom: 15px;
+    }
+    
+    .dot {
+        width: 10px;
+        height: 10px;
     }
     
     .admin-container {
@@ -1761,6 +1835,55 @@ section {
     .data-table th,
     .data-table td {
         padding: 0.75rem 0.5rem;
+    }
+    
+    /* Mobile top bar */
+    .top-bar-content {
+        flex-direction: column;
+        gap: 0.3rem;
+        text-align: center;
+        font-size: 0.8rem;
+    }
+    
+    .logo h1 {
+        font-size: 1.4rem;
+    }
+    
+    /* Features mobile */
+    .features-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+    
+    .feature-card {
+        padding: 1.2rem;
+    }
+    
+    .feature-card i {
+        font-size: 2rem;
+    }
+    
+    .feature-card h3 {
+        font-size: 0.95rem;
+    }
+    
+    .feature-card p {
+        font-size: 0.8rem;
+    }
+    
+    /* Section titles */
+    .section-title {
+        font-size: 1.6rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    /* Page header mobile */
+    .page-header {
+        padding: 2rem 0;
+    }
+    
+    .page-header h1 {
+        font-size: 1.6rem;
     }
 }
 
