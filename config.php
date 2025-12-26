@@ -1,8 +1,9 @@
 <?php
 // Environment Detection - checks if running on localhost or production
-$is_localhost = (strpos($_SERVER['HTTP_HOST'] ?? 'localhost', 'localhost') !== false || 
-                 $_SERVER['HTTP_HOST'] == '127.0.0.1' ||
-                 strpos($_SERVER['SERVER_NAME'] ?? '', 'localhost') !== false);
+$is_localhost = (
+    (isset($_SERVER['HTTP_HOST']) && (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false || $_SERVER['HTTP_HOST'] == '127.0.0.1')) ||
+    (isset($_SERVER['SERVER_NAME']) && strpos($_SERVER['SERVER_NAME'], 'localhost') !== false)
+);
 
 // Database configuration based on environment
 if ($is_localhost) {
@@ -18,7 +19,10 @@ if ($is_localhost) {
     define('DB_USER', 'u926020147_company');
     define('DB_PASS', 'jYOTISH7870%');
     define('DB_NAME', 'u926020147_company');
-    define('BASE_URL', '/'); // Will work with any domain/subdomain
+    // Auto-detect the full URL
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
+    $host = $_SERVER['HTTP_HOST'] ?? 'company.mysunrise.in';
+    define('BASE_URL', $protocol . $host . '/');
 }
 
 // Create database connection
