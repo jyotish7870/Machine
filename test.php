@@ -20,34 +20,50 @@ echo "<p>Host: " . ($_SERVER['HTTP_HOST'] ?? 'Not Set') . "</p>";
 echo "<h3>Database Test:</h3>";
 $db_host = 'localhost';
 $db_user = 'u926020147_company';
-$db_pass = 'jYOTISH7870%';
+$db_pass = 'jYOTISH7870%'; // Try with %
 $db_name = 'u926020147_company';
 
-echo "<p>Trying: DB=$db_name, User=$db_user</p>";
+echo "<p>Trying: DB=$db_name, User=$db_user, Pass Length=" . strlen($db_pass) . "</p>";
 
-try {
-    $conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
-    if ($conn->connect_error) {
-        echo "<p>❌ Connection Error: " . $conn->connect_error . "</p>";
-    } else {
-        echo "<p>✅ Database connected successfully!</p>";
-        
-        // Check tables
-        $result = $conn->query("SHOW TABLES");
-        if ($result && $result->num_rows > 0) {
-            echo "<p>✅ Tables found: " . $result->num_rows . "</p>";
-            echo "<ul>";
-            while ($row = $result->fetch_array()) {
-                echo "<li>" . $row[0] . "</li>";
+// Try multiple password variations
+$passwords = [
+    'jYOTISH7870%',
+    'jYOTISH7870',
+    'Jyotish7870%',
+    'Jyotish7870'
+];
+
+$connected = false;
+foreach ($passwords as $pass) {
+    try {
+        $conn = @new mysqli($db_host, $db_user, $pass, $db_name);
+        if (!$conn->connect_error) {
+            echo "<p>✅ Connected with password variation!</p>";
+            $connected = true;
+            
+            // Check tables
+            $result = $conn->query("SHOW TABLES");
+            if ($result && $result->num_rows > 0) {
+                echo "<p>✅ Tables found: " . $result->num_rows . "</p>";
+                echo "<ul>";
+                while ($row = $result->fetch_array()) {
+                    echo "<li>" . $row[0] . "</li>";
+                }
+                echo "</ul>";
+            } else {
+                echo "<p>❌ No tables found - Please import database.sql</p>";
             }
-            echo "</ul>";
-        } else {
-            echo "<p>❌ No tables found - Please import database.sql</p>";
+            $conn->close();
+            break;
         }
-        $conn->close();
+    } catch (Exception $e) {
+        // Try next password
     }
-} catch (Exception $e) {
-    echo "<p>❌ Exception: " . $e->getMessage() . "</p>";
+}
+
+if (!$connected) {
+    echo "<p>❌ All password attempts failed!</p>";
+    echo "<p>Please reset password in Hostinger to something simple like: <b>Jyotish7870</b></p>";
 }
 
 // Test 4: Check if files exist
