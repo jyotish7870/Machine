@@ -23,27 +23,31 @@ $db_user = 'u926020147_company';
 $db_pass = 'jYOTISH7870%';
 $db_name = 'u926020147_company';
 
-$conn = @mysqli_connect($db_host, $db_user, $db_pass, $db_name);
+echo "<p>Trying: DB=$db_name, User=$db_user</p>";
 
-if ($conn) {
-    echo "<p>✅ Database connected successfully!</p>";
-    
-    // Check tables
-    $result = mysqli_query($conn, "SHOW TABLES");
-    if ($result && mysqli_num_rows($result) > 0) {
-        echo "<p>✅ Tables found: " . mysqli_num_rows($result) . "</p>";
-        echo "<ul>";
-        while ($row = mysqli_fetch_array($result)) {
-            echo "<li>" . $row[0] . "</li>";
-        }
-        echo "</ul>";
+try {
+    $conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
+    if ($conn->connect_error) {
+        echo "<p>❌ Connection Error: " . $conn->connect_error . "</p>";
     } else {
-        echo "<p>❌ No tables found - Please import database.sql</p>";
+        echo "<p>✅ Database connected successfully!</p>";
+        
+        // Check tables
+        $result = $conn->query("SHOW TABLES");
+        if ($result && $result->num_rows > 0) {
+            echo "<p>✅ Tables found: " . $result->num_rows . "</p>";
+            echo "<ul>";
+            while ($row = $result->fetch_array()) {
+                echo "<li>" . $row[0] . "</li>";
+            }
+            echo "</ul>";
+        } else {
+            echo "<p>❌ No tables found - Please import database.sql</p>";
+        }
+        $conn->close();
     }
-    mysqli_close($conn);
-} else {
-    echo "<p>❌ Database connection failed!</p>";
-    echo "<p>Error: " . mysqli_connect_error() . "</p>";
+} catch (Exception $e) {
+    echo "<p>❌ Exception: " . $e->getMessage() . "</p>";
 }
 
 // Test 4: Check if files exist
