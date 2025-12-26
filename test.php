@@ -20,16 +20,13 @@ echo "<p>Host: " . ($_SERVER['HTTP_HOST'] ?? 'Not Set') . "</p>";
 echo "<h3>Database Test:</h3>";
 $db_host = 'localhost';
 $db_user = 'u926020147_company';
-$db_pass = 'jYOTISH7870%'; // Try with %
+$db_pass = 'Jyotish7870';
 $db_name = 'u926020147_company';
 
 echo "<p>Trying: DB=$db_name, User=$db_user, Pass Length=" . strlen($db_pass) . "</p>";
 
-// Try multiple password variations
+// Try with new password
 $passwords = [
-    'jYOTISH7870%',
-    'jYOTISH7870',
-    'Jyotish7870%',
     'Jyotish7870'
 ];
 
