@@ -1,0 +1,23 @@
+# Ignore uploaded files (they should be uploaded separately on production)
+# uploads/*
+# !uploads/.gitkeep
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# Keep uploads folder but ignore large files
+uploads/*.mp4
+uploads/*.mov
+uploads/*.avi
