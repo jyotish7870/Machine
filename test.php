@@ -17,7 +17,7 @@ echo "<h3>Database Test:</h3>";
 
 // Direct hardcoded test
 $db_host = 'localhost';
-$db_user = 'u926020147_company';
+$db_user = 'u926020147_comapny';
 $db_pass = 'Jyotish7870';
 $db_name = 'u926020147_company';
 

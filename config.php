@@ -16,7 +16,7 @@ if ($is_localhost) {
 } else {
     // PRODUCTION (HOSTINGER)
     define('DB_HOST', 'localhost');
-    define('DB_USER', 'u926020147_company');
+    define('DB_USER', 'u926020147_comapny');
     define('DB_PASS', 'Jyotish7870');
     define('DB_NAME', 'u926020147_company');
     // Auto-detect the full URL
