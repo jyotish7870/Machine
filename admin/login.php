@@ -59,7 +59,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <input type="password" id="password" name="password" required>
                 </div>
                 <button type="submit" class="btn btn-primary">Login</button>
-                <p class="login-hint">Default: admin / admin123</p>
             </form>
             <a href="../index.php" class="back-link"><i class="fas fa-arrow-left"></i> Back to Website</a>
         </div>

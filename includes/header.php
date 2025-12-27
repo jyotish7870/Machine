@@ -4,7 +4,7 @@ require_once __DIR__ . '/functions.php';
 
 // Get all settings for use in header
 $site_settings = getAllSettings();
-$site_name = $site_settings['site_name'] ?? 'Company Machines';
+$site_name = $site_settings['site_name'] ?? (defined('SITE_DISPLAY_NAME') ? SITE_DISPLAY_NAME : 'M.KPACKING');
 $whatsapp_number = $site_settings['social_whatsapp'] ?? '';
 $header_phone = $site_settings['header_phone'] ?? '';
 $header_email = $site_settings['header_email'] ?? '';

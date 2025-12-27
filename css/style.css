@@ -1683,13 +1683,16 @@ section {
     }
     
     .hero-slider {
-        height: 450px;
+        height: 100vh;
+        min-height: 500px;
     }
     
     .slide-content {
         left: 15px;
-        right: 15px;
-        bottom: 80px;
+        right: auto;
+        bottom: 100px;
+        top: auto;
+        max-width: 280px;
         padding: 1rem 1.2rem;
         background: rgba(0, 0, 0, 0.75);
         border-radius: 8px;

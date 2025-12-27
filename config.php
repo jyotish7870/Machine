@@ -25,6 +25,9 @@ if ($is_localhost) {
     define('BASE_URL', $protocol . $host . '/');
 }
 
+// Site Branding - Display name (URL remains mysunrise.in but displays as M.KPACKING)
+define('SITE_DISPLAY_NAME', 'M.KPACKING');
+
 // Create database connection
 $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 

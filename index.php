@@ -4,7 +4,7 @@ require_once 'includes/functions.php';
 
 // Get site settings
 $site_settings = getAllSettings();
-$site_name = $site_settings['site_name'] ?? 'Company Machines';
+$site_name = $site_settings['site_name'] ?? (defined('SITE_DISPLAY_NAME') ? SITE_DISPLAY_NAME : 'M.KPACKING');
 $page_title = 'Home - ' . $site_name;
 
 // Get active products for display
