@@ -79,55 +79,39 @@ $spare_query = "SELECT sp.*, p.title as product_title
                 LEFT JOIN products p ON sp.product_id = p.id 
                 ORDER BY p.title ASC, sp.display_order ASC";
 $spare_result = mysqli_query($conn, $spare_query);
+
+// Page settings
+$page_title = 'Spare Parts';
+$page_icon = 'fas fa-cog';
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Spare Parts</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <title><?php echo $page_title; ?> - Admin</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .form-actions { margin-top: 20px; }
+        .table-thumb-small { width: 50px; height: 50px; object-fit: cover; border-radius: 6px; }
+        .no-image { display: inline-flex; width: 50px; height: 50px; background: #f1f5f9; border-radius: 6px; align-items: center; justify-content: center; color: #94a3b8; }
+        small { color: #64748b; font-size: 12px; }
+    </style>
 </head>
-<body class="admin-page">
-    <div class="admin-header">
-        <div class="container">
-            <h1><i class="fas fa-cog"></i> Manage Spare Parts</h1>
-            <div class="admin-user">
-                <span>Welcome, <?php echo $_SESSION['admin_username']; ?></span>
-                <a href="logout.php" class="btn btn-danger"><i class="fas fa-sign-out-alt"></i> Logout</a>
-            </div>
-        </div>
-    </div>
-    
-    <div class="admin-container">
-        <div class="admin-sidebar">
-            <ul>
-                <li><a href="dashboard.php"><i class="fas fa-home"></i> Dashboard</a></li>
-                <li><a href="products.php"><i class="fas fa-box"></i> Manage Products</a></li>
-                <li><a href="add_product.php"><i class="fas fa-plus"></i> Add Product</a></li>
-                <li><a href="categories.php"><i class="fas fa-folder"></i> Categories</a></li>
-                <li><a href="spare_parts.php" class="active"><i class="fas fa-cog"></i> Spare Parts</a></li>
-                <li><a href="site_settings.php"><i class="fas fa-sliders-h"></i> Site Content</a></li>
-                <li><a href="../index.php" target="_blank"><i class="fas fa-eye"></i> View Website</a></li>
-            </ul>
-        </div>
-        
-        <div class="admin-content">
+<body>
+<?php include 'includes/admin_header.php'; ?>
+
             <?php if ($success): ?>
-                <div class="alert alert-success"><?php echo $success; ?></div>
+                <div class="alert alert-success"><i class="fas fa-check-circle"></i> <?php echo $success; ?></div>
             <?php endif; ?>
             <?php if ($error): ?>
-                <div class="alert alert-error"><?php echo $error; ?></div>
+                <div class="alert alert-error"><i class="fas fa-exclamation-circle"></i> <?php echo $error; ?></div>
             <?php endif; ?>
             
-            <div class="content-header">
-                <h2>Spare Parts & Accessories</h2>
-            </div>
-            
             <!-- Add Spare Part Form -->
-            <div class="form-container" style="margin-bottom: 2rem;">
-                <h3>Add New Spare Part</h3>
+            <div class="content-card">
+                <h3 style="margin-bottom: 20px;">Add New Spare Part</h3>
                 <form method="POST" action="" enctype="multipart/form-data">
                     <input type="hidden" name="action" value="add">
                     
@@ -191,53 +175,56 @@ $spare_result = mysqli_query($conn, $spare_query);
             </div>
             
             <!-- Spare Parts List -->
-            <div class="table-responsive">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Image</th>
-                            <th>Product</th>
-                            <th>Name</th>
-                            <th>Price</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php if (mysqli_num_rows($spare_result) > 0): ?>
-                            <?php while ($part = mysqli_fetch_assoc($spare_result)): ?>
-                                <tr>
-                                    <td>
-                                        <?php if ($part['image_path']): ?>
-                                            <img src="../<?php echo $part['image_path']; ?>" class="table-thumb-small" alt="">
-                                        <?php else: ?>
-                                            <span class="no-image"><i class="fas fa-image"></i></span>
-                                        <?php endif; ?>
-                                    </td>
-                                    <td><?php echo htmlspecialchars($part['product_title'] ?? 'N/A'); ?></td>
-                                    <td><?php echo htmlspecialchars($part['name']); ?></td>
-                                    <td><?php echo htmlspecialchars($part['price'] ?: '-'); ?></td>
-                                    <td>
-                                        <span class="badge badge-<?php echo $part['status'] == 'available' ? 'active' : 'inactive'; ?>">
-                                            <?php echo ucfirst(str_replace('_', ' ', $part['status'])); ?>
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <form method="POST" style="display:inline;" onsubmit="return confirm('Delete this spare part?')">
-                                            <input type="hidden" name="action" value="delete">
-                                            <input type="hidden" name="id" value="<?php echo $part['id']; ?>">
-                                            <button type="submit" class="btn-icon btn-danger"><i class="fas fa-trash"></i></button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            <?php endwhile; ?>
-                        <?php else: ?>
-                            <tr><td colspan="6" style="text-align:center;">No spare parts found. Add products first, then add spare parts.</td></tr>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
+            <div class="content-card">
+                <h3 style="margin-bottom: 20px;">All Spare Parts</h3>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Product</th>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if (mysqli_num_rows($spare_result) > 0): ?>
+                                <?php while ($part = mysqli_fetch_assoc($spare_result)): ?>
+                                    <tr>
+                                        <td>
+                                            <?php if ($part['image_path']): ?>
+                                                <img src="../<?php echo $part['image_path']; ?>" class="table-thumb-small" alt="">
+                                            <?php else: ?>
+                                                <span class="no-image"><i class="fas fa-image"></i></span>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td><?php echo htmlspecialchars($part['product_title'] ?? 'N/A'); ?></td>
+                                        <td><?php echo htmlspecialchars($part['name']); ?></td>
+                                        <td><?php echo htmlspecialchars($part['price'] ?: '-'); ?></td>
+                                        <td>
+                                            <span class="badge badge-<?php echo $part['status'] == 'available' ? 'available' : 'out_of_stock'; ?>">
+                                                <?php echo ucfirst(str_replace('_', ' ', $part['status'])); ?>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <form method="POST" style="display:inline;" onsubmit="return confirm('Delete this spare part?')">
+                                                <input type="hidden" name="action" value="delete">
+                                                <input type="hidden" name="id" value="<?php echo $part['id']; ?>">
+                                                <button type="submit" class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                <?php endwhile; ?>
+                            <?php else: ?>
+                                <tr><td colspan="6" style="text-align:center; padding: 30px; color: #64748b;">No spare parts found. Add products first, then add spare parts.</td></tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
-    </div>
+
+<?php include 'includes/admin_footer.php'; ?>
 </body>
 </html>

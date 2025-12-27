@@ -58,126 +58,93 @@ $settings = [];
 while ($row = mysqli_fetch_assoc($result)) {
     $settings[] = $row;
 }
+
+// Page settings
+$page_title = 'Site Content';
+$page_icon = 'fas fa-sliders-h';
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Site Content</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <title><?php echo $page_title; ?> - Admin</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .settings-tabs {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
-            background: white;
-            padding: 1rem;
-            border-radius: 10px;
-            box-shadow: var(--shadow);
+            gap: 10px;
+            margin-bottom: 25px;
         }
         .settings-tab {
-            padding: 0.8rem 1.5rem;
-            background: var(--light-color);
-            border: none;
-            border-radius: 5px;
-            color: var(--text-color);
+            padding: 10px 18px;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            color: #374151;
             text-decoration: none;
             font-weight: 500;
             transition: all 0.3s;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 8px;
+            font-size: 14px;
         }
         .settings-tab:hover {
-            background: var(--border-color);
+            border-color: #3b82f6;
+            color: #3b82f6;
         }
         .settings-tab.active {
-            background: var(--primary-color);
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
             color: white;
+            border-color: transparent;
         }
         .settings-form .form-group {
-            margin-bottom: 1.5rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e5e7eb;
         }
         .settings-form .form-group:last-of-type {
             border-bottom: none;
         }
-        .settings-form label {
-            font-weight: 600;
-            color: var(--dark-color);
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-        .settings-form .setting-key {
-            font-size: 0.75rem;
-            color: var(--text-color);
-            opacity: 0.7;
-            margin-bottom: 0.5rem;
-        }
-        .settings-form input[type="text"],
-        .settings-form textarea {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid var(--border-color);
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-        .settings-form textarea {
-            min-height: 100px;
-            resize: vertical;
+        .setting-key {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-bottom: 8px;
         }
         .group-header {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid var(--primary-color);
+            gap: 10px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #3b82f6;
         }
         .group-header i {
-            font-size: 1.5rem;
-            color: var(--primary-color);
+            font-size: 20px;
+            color: #3b82f6;
         }
         .group-header h3 {
             margin: 0;
-            color: var(--dark-color);
+            color: #1e293b;
+            font-size: 18px;
+        }
+        .form-actions { margin-top: 25px; display: flex; gap: 15px; flex-wrap: wrap; }
+        @media (max-width: 768px) {
+            .settings-tab { padding: 8px 12px; font-size: 12px; }
+            .settings-tab span { display: none; }
         }
     </style>
 </head>
-<body class="admin-page">
-    <div class="admin-header">
-        <div class="container">
-            <h1><i class="fas fa-sliders-h"></i> Manage Site Content</h1>
-            <div class="admin-user">
-                <span>Welcome, <?php echo $_SESSION['admin_username']; ?></span>
-                <a href="logout.php" class="btn btn-danger"><i class="fas fa-sign-out-alt"></i> Logout</a>
-            </div>
-        </div>
-    </div>
-    
-    <div class="admin-container">
-        <div class="admin-sidebar">
-            <ul>
-                <li><a href="dashboard.php"><i class="fas fa-home"></i> Dashboard</a></li>
-                <li><a href="products.php"><i class="fas fa-box"></i> Manage Products</a></li>
-                <li><a href="add_product.php"><i class="fas fa-plus"></i> Add Product</a></li>
-                <li><a href="categories.php"><i class="fas fa-folder"></i> Categories</a></li>
-                <li><a href="spare_parts.php"><i class="fas fa-cog"></i> Spare Parts</a></li>
-                <li><a href="site_settings.php" class="active"><i class="fas fa-sliders-h"></i> Site Content</a></li>
-                <li><a href="../index.php" target="_blank"><i class="fas fa-eye"></i> View Website</a></li>
-            </ul>
-        </div>
-        
-        <div class="admin-content">
+<body>
+<?php include 'includes/admin_header.php'; ?>
+
             <?php if ($success): ?>
-                <div class="alert alert-success"><?php echo $success; ?></div>
+                <div class="alert alert-success"><i class="fas fa-check-circle"></i> <?php echo $success; ?></div>
             <?php endif; ?>
             <?php if ($error): ?>
-                <div class="alert alert-error"><?php echo $error; ?></div>
+                <div class="alert alert-error"><i class="fas fa-exclamation-circle"></i> <?php echo $error; ?></div>
             <?php endif; ?>
             
             <!-- Settings Tabs -->
@@ -186,13 +153,13 @@ while ($row = mysqli_fetch_assoc($result)) {
                     <a href="site_settings.php?group=<?php echo $key; ?>" 
                        class="settings-tab <?php echo $current_group == $key ? 'active' : ''; ?>">
                         <i class="fas <?php echo $group['icon']; ?>"></i>
-                        <?php echo $group['label']; ?>
+                        <span><?php echo $group['label']; ?></span>
                     </a>
                 <?php endforeach; ?>
             </div>
             
             <!-- Settings Form -->
-            <div class="form-container">
+            <div class="content-card">
                 <div class="group-header">
                     <i class="fas <?php echo $groups[$current_group]['icon']; ?>"></i>
                     <h3><?php echo $groups[$current_group]['label']; ?></h3>
@@ -228,16 +195,16 @@ while ($row = mysqli_fetch_assoc($result)) {
                             <button type="submit" class="btn btn-primary">
                                 <i class="fas fa-save"></i> Save Changes
                             </button>
-                            <a href="../index.php" target="_blank" class="btn btn-secondary">
+                            <a href="../index.php" target="_blank" class="btn btn-success">
                                 <i class="fas fa-eye"></i> Preview Website
                             </a>
                         </div>
                     <?php else: ?>
-                        <p>No settings found for this section.</p>
+                        <p style="color: #64748b; padding: 20px 0;">No settings found for this section.</p>
                     <?php endif; ?>
                 </form>
             </div>
-        </div>
-    </div>
+
+<?php include 'includes/admin_footer.php'; ?>
 </body>
 </html>

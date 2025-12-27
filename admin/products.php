@@ -30,41 +30,23 @@ if (isset($_GET['delete'])) {
 // Get all products
 $query = "SELECT * FROM products ORDER BY display_order ASC, created_at DESC";
 $result = mysqli_query($conn, $query);
+
+// Page settings
+$page_title = 'Manage Products';
+$page_icon = 'fas fa-box';
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Products</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <title><?php echo $page_title; ?> - Admin</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="admin-page">
-    <div class="admin-header">
-        <div class="container">
-            <h1><i class="fas fa-box"></i> Manage Products</h1>
-            <div class="admin-user">
-                <span>Welcome, <?php echo $_SESSION['admin_username']; ?></span>
-                <a href="logout.php" class="btn btn-danger"><i class="fas fa-sign-out-alt"></i> Logout</a>
-            </div>
-        </div>
-    </div>
-    
-    <div class="admin-container">
-        <div class="admin-sidebar">
-            <ul>
-                <li><a href="dashboard.php"><i class="fas fa-home"></i> Dashboard</a></li>
-                <li><a href="products.php" class="active"><i class="fas fa-box"></i> Manage Products</a></li>
-                <li><a href="add_product.php"><i class="fas fa-plus"></i> Add Product</a></li>
-                <li><a href="categories.php"><i class="fas fa-folder"></i> Categories</a></li>
-                <li><a href="spare_parts.php"><i class="fas fa-cog"></i> Spare Parts</a></li>
-                <li><a href="site_settings.php"><i class="fas fa-sliders-h"></i> Site Content</a></li>
-                <li><a href="../index.php" target="_blank"><i class="fas fa-eye"></i> View Website</a></li>
-            </ul>
-        </div>
-        
-        <div class="admin-content">
+<body>
+<?php include 'includes/admin_header.php'; ?>
+
+        <div class="content-card">
             <div class="content-header">
                 <h2>All Products</h2>
                 <a href="add_product.php" class="btn btn-primary"><i class="fas fa-plus"></i> Add New</a>
@@ -101,8 +83,10 @@ $result = mysqli_query($conn, $query);
                             <td><?php echo $row['display_order']; ?></td>
                             <td><?php echo date('M d, Y', strtotime($row['created_at'])); ?></td>
                             <td>
-                                <a href="edit_product.php?id=<?php echo $row['id']; ?>" class="btn-icon" title="Edit"><i class="fas fa-edit"></i></a>
-                                <a href="?delete=<?php echo $row['id']; ?>" class="btn-icon btn-danger" title="Delete" onclick="return confirm('Are you sure you want to delete this product?')"><i class="fas fa-trash"></i></a>
+                                <div class="action-btns">
+                                    <a href="edit_product.php?id=<?php echo $row['id']; ?>" class="action-btn edit" title="Edit"><i class="fas fa-edit"></i></a>
+                                    <a href="?delete=<?php echo $row['id']; ?>" class="action-btn delete" title="Delete" onclick="return confirm('Are you sure you want to delete this product?')"><i class="fas fa-trash"></i></a>
+                                </div>
                             </td>
                         </tr>
                         <?php endwhile; ?>
@@ -110,6 +94,7 @@ $result = mysqli_query($conn, $query);
                 </table>
             </div>
         </div>
-    </div>
+
+<?php include 'includes/admin_footer.php'; ?>
 </body>
 </html>

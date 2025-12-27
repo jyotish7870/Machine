@@ -41,105 +41,91 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Refresh categories list
     $cat_result = mysqli_query($conn, $cat_query);
 }
+
+// Page settings
+$page_title = 'Categories';
+$page_icon = 'fas fa-folder';
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Categories</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <title><?php echo $page_title; ?> - Admin</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .inline-form .form-row { display: flex; gap: 15px; align-items: flex-end; flex-wrap: wrap; }
+        .inline-form .form-group { margin-bottom: 0; flex: 1; min-width: 150px; }
+    </style>
 </head>
-<body class="admin-page">
-    <div class="admin-header">
-        <div class="container">
-            <h1><i class="fas fa-folder"></i> Manage Categories</h1>
-            <div class="admin-user">
-                <span>Welcome, <?php echo $_SESSION['admin_username']; ?></span>
-                <a href="logout.php" class="btn btn-danger"><i class="fas fa-sign-out-alt"></i> Logout</a>
-            </div>
-        </div>
-    </div>
-    
-    <div class="admin-container">
-        <div class="admin-sidebar">
-            <ul>
-                <li><a href="dashboard.php"><i class="fas fa-home"></i> Dashboard</a></li>
-                <li><a href="products.php"><i class="fas fa-box"></i> Manage Products</a></li>
-                <li><a href="add_product.php"><i class="fas fa-plus"></i> Add Product</a></li>
-                <li><a href="categories.php" class="active"><i class="fas fa-folder"></i> Categories</a></li>
-                <li><a href="spare_parts.php"><i class="fas fa-cog"></i> Spare Parts</a></li>
-                <li><a href="site_settings.php"><i class="fas fa-sliders-h"></i> Site Content</a></li>
-                <li><a href="../index.php" target="_blank"><i class="fas fa-eye"></i> View Website</a></li>
-            </ul>
-        </div>
-        
-        <div class="admin-content">
+<body>
+<?php include 'includes/admin_header.php'; ?>
+
             <?php if ($success): ?>
-                <div class="alert alert-success"><?php echo $success; ?></div>
+                <div class="alert alert-success"><i class="fas fa-check-circle"></i> <?php echo $success; ?></div>
             <?php endif; ?>
             <?php if ($error): ?>
-                <div class="alert alert-error"><?php echo $error; ?></div>
+                <div class="alert alert-error"><i class="fas fa-exclamation-circle"></i> <?php echo $error; ?></div>
             <?php endif; ?>
             
-            <div class="content-header">
-                <h2>Product Categories</h2>
-            </div>
-            
             <!-- Add Category Form -->
-            <div class="form-container" style="margin-bottom: 2rem;">
-                <h3>Add New Category</h3>
+            <div class="content-card">
+                <h3 style="margin-bottom: 20px;">Add New Category</h3>
                 <form method="POST" action="" class="inline-form">
                     <input type="hidden" name="action" value="add">
                     <div class="form-row">
                         <div class="form-group">
-                            <input type="text" name="name" placeholder="Category Name" required>
+                            <label>Category Name</label>
+                            <input type="text" name="name" placeholder="Enter category name" required>
                         </div>
                         <div class="form-group">
-                            <input type="number" name="display_order" placeholder="Order" value="0">
+                            <label>Order</label>
+                            <input type="number" name="display_order" placeholder="0" value="0">
                         </div>
-                        <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Add</button>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Add Category</button>
                     </div>
                 </form>
             </div>
             
             <!-- Categories List -->
-            <div class="table-responsive">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Slug</th>
-                            <th>Order</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php if (mysqli_num_rows($cat_result) > 0): ?>
-                            <?php while ($cat = mysqli_fetch_assoc($cat_result)): ?>
-                                <tr>
-                                    <td><?php echo $cat['id']; ?></td>
-                                    <td><?php echo htmlspecialchars($cat['name']); ?></td>
-                                    <td><?php echo htmlspecialchars($cat['slug']); ?></td>
-                                    <td><?php echo $cat['display_order']; ?></td>
-                                    <td>
-                                        <form method="POST" style="display:inline;" onsubmit="return confirm('Delete this category?')">
-                                            <input type="hidden" name="action" value="delete">
-                                            <input type="hidden" name="id" value="<?php echo $cat['id']; ?>">
-                                            <button type="submit" class="btn-icon btn-danger"><i class="fas fa-trash"></i></button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            <?php endwhile; ?>
-                        <?php else: ?>
-                            <tr><td colspan="5" style="text-align:center;">No categories found</td></tr>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
+            <div class="content-card">
+                <h3 style="margin-bottom: 20px;">All Categories</h3>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Slug</th>
+                                <th>Order</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if (mysqli_num_rows($cat_result) > 0): ?>
+                                <?php while ($cat = mysqli_fetch_assoc($cat_result)): ?>
+                                    <tr>
+                                        <td><?php echo $cat['id']; ?></td>
+                                        <td><?php echo htmlspecialchars($cat['name']); ?></td>
+                                        <td><?php echo htmlspecialchars($cat['slug']); ?></td>
+                                        <td><?php echo $cat['display_order']; ?></td>
+                                        <td>
+                                            <form method="POST" style="display:inline;" onsubmit="return confirm('Delete this category?')">
+                                                <input type="hidden" name="action" value="delete">
+                                                <input type="hidden" name="id" value="<?php echo $cat['id']; ?>">
+                                                <button type="submit" class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                <?php endwhile; ?>
+                            <?php else: ?>
+                                <tr><td colspan="5" style="text-align:center; padding: 30px; color: #64748b;">No categories found</td></tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
-    </div>
+
+<?php include 'includes/admin_footer.php'; ?>
 </body>
 </html>
