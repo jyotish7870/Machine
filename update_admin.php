@@ -7,8 +7,8 @@
 require_once 'config.php';
 
 // New admin credentials
-$new_username = 'jyotish';
-$new_password = 'jyotish7870%';
+$new_username = 'gaurav';
+$new_password = 'gaurav7870%';
 $password_hash = password_hash($new_password, PASSWORD_DEFAULT);
 
 echo "<div style='font-family: Arial, sans-serif; max-width: 500px; margin: 50px auto; padding: 30px; background: #f9f9f9; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);'>";
